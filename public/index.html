@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Group Chat - Telegram Style</title>
+    <!-- Use Inter font for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Join Screen Modal -->
+    <div id="join-screen" class="join-screen active">
+        <div class="join-card">
+            <h2>Join Public Chat</h2>
+            <p>Please enter your name to start chatting.</p>
+            <form id="join-form">
+                <input type="text" id="username-input" placeholder="Username" required autocomplete="off">
+                <button type="submit" class="join-btn">Join Chat</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Telegram-style Layout -->
+    <div class="app-layout">
+        
+        <!-- Left Panel -->
+        <aside class="left-panel" id="left-panel">
+            <div class="panel-header">
+                <div class="profile-icon"></div>
+                <h2>Chats</h2>
+            </div>
+            <div class="chat-list">
+                <div class="chat-item active-chat">
+                    <div class="chat-avatar">GC</div>
+                    <div class="chat-summary">
+                        <div class="chat-title">Public Group Chat</div>
+                        <div class="chat-subtitle" id="sidebar-online-status">Online users: 0</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Chat Area -->
+        <main class="chat-area">
+            <!-- Header -->
+            <header class="chat-header">
+                <div class="header-info">
+                    <h3 class="group-name">Public Group Chat</h3>
+                    <span class="online-count" id="header-online-status">0 members online</span>
+                </div>
+            </header>
+
+            <!-- Chat History Area -->
+            <div class="chat-history" id="chat-history">
+                <!-- Messages will be injected here via JS -->
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-area">
+                <form id="message-form" class="message-form">
+                    <button type="button" class="icon-btn emoji-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="var(--icon-color)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.5 8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3.5 6.5c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z"/></svg>
+                    </button>
+                    <input type="text" id="message-input" placeholder="Write a message..." autocomplete="off">
+                    <button type="submit" class="icon-btn send-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="var(--primary-color)"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Socket.IO library from CDN -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+:root {
+    --primary-color: #3390ec;
+    --primary-hover: #297acc;
+    --bg-color: #f4f4f5;
+    --chat-bg: #8ba3a6; /* Telegram-ish background */
+    --panel-bg: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #707579;
+    --border-color: #e4e4e5;
+    --bubble-mine: #e3f2fd; /* Light blue bubble for 'me' */
+    --bubble-other: #ffffff;
+    --icon-color: #a6abb0;
+    --system-msg-bg: rgba(0,0,0,0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-family: 'Inter', sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+/* Join Screen */
+.join-screen {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.join-screen.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.join-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.join-card h2 {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.join-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+#join-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#join-form input {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#join-form input:focus {
+    border-color: var(--primary-color);
+}
+
+.join-btn {
+    padding: 0.8rem;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.join-btn:hover {
+    background: var(--primary-hover);
+}
+
+/* App Layout */
+.app-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Left Panel */
+.left-panel {
+    width: 320px;
+    background: var(--panel-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>');
+    background-size: cover;
+}
+
+.panel-header h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.chat-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.chat-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.chat-item:hover {
+    background: var(--bg-color);
+}
+
+.chat-item.active-chat {
+    background: var(--primary-color);
+    color: white;
+}
+
+.chat-item.active-chat .chat-subtitle {
+    color: rgba(255,255,255,0.8);
+}
+
+.chat-avatar {
+    width: 48px;
+    height: 48px;
+    background: #ffab91;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.chat-title {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.chat-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Chat Area */
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--chat-bg);
+    position: relative;
+    /* Soft telegram chat background pattern simulation */
+    background-image: radial-gradient(rgba(0,0,0,0.05) 1px, transparent 0);
+    background-size: 20px 20px;
+}
+
+.chat-header {
+    background: var(--panel-bg);
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.group-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.online-count {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.chat-history {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Custom Scrollbar */
+.chat-history::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+/* Messages */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 65%;
+    width: fit-content;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.msg-wrapper.my-message {
+    align-self: flex-end;
+}
+
+.msg-wrapper.other-message {
+    align-self: flex-start;
+}
+
+.message-bubble {
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    word-wrap: break-word;
+}
+
+.my-message .message-bubble {
+    background: var(--bubble-mine);
+    border-bottom-right-radius: 4px;
+}
+
+.other-message .message-bubble {
+    background: var(--bubble-other);
+    border-bottom-left-radius: 4px;
+}
+
+.msg-username {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.2rem;
+}
+
+.my-message .msg-username {
+    display: none; /* Hide my own username */
+}
+
+.msg-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    display: inline-block;
+    margin-right: 2.5rem; /* space for time */
+}
+
+.msg-time {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.5rem;
+}
+
+.system-message {
+    align-self: center;
+    background: var(--system-msg-bg);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin: 0.5rem 0;
+}
+
+/* Input Area */
+.chat-input-area {
+    padding: 1rem;
+    background: transparent;
+}
+
+.message-form {
+    display: flex;
+    align-items: center;
+    background: var(--panel-bg);
+    border-radius: 24px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    gap: 0.8rem;
+}
+
+#message-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background: transparent;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem;
+}
+
+.icon-btn:hover svg {
+    opacity: 0.8;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .left-panel {
+        display: none;
+    }
+    .message {
+        max-width: 85%;
+    }
+}
